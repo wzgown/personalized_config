@@ -1,15 +1,15 @@
 " Specify a directory for plugins
 " - For Neovim: ~/.local/share/nvim/plugged
 " - Avoid using standard Vim directory names like 'plugin'
-call plug#begin('~/.vim/plugged')
+call plug#begin('~/.local/share/nvim/plugged')
 
 Plug 'NLKNguyen/papercolor-theme' " 主题
 Plug 'morhetz/gruvbox'            " 主题
 
 Plug 'scrooloose/nerdtree'       " 文件目录
-Plug 'jistr/vim-nerdtree-tabs'   " 
+Plug 'jistr/vim-nerdtree-tabs'   "-
 Plug 'Xuyuanp/nerdtree-git-plugin' " 文件目录中显示git状态
- 
+-
 Plug 'vim-airline/vim-airline'   " 超强的状态栏
 Plug 'godlygeek/tabular'         " 代码对齐
 Plug 'junegunn/vim-easy-align'   " 代码对齐
@@ -26,8 +26,10 @@ Plug 'octol/vim-cpp-enhanced-highlight' " C++ 增加高亮，可高亮标准库�
 Plug 'mg979/vim-visual-multi'   " 多光标同时编辑
 Plug 'w0rp/ale'                 " 代码静态检查
 
+Plug 'Yggdroot/LeaderF', { 'do': './install.sh' } " used for locating files, buffers, mrus, ctags, gtags, etc. in large project.
+
 " 自动补全
-Plug 'neoclide/coc.nvim', {'do': { -> coc#util#install()}} " 基于LSP的自动补全
+Plug 'neoclide/coc.nvim', {'tag': '*', 'do': './install.sh'}
 " Plug 'ncm2/ncm2'
 " Plug 'roxma/nvim-yarp'
 " Plug 'ncm2/ncm2-go'   " golang 补全
@@ -36,7 +38,7 @@ Plug 'neoclide/coc.nvim', {'do': { -> coc#util#install()}} " 基于LSP的自动�
 " Plug 'ncm2/ncm2-path'
 
 " 快速查找/打开文件
-Plug '/usr/local/opt/fzf'
+Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
 
 " Language Server Protocol (LSP)
@@ -50,6 +52,7 @@ Plug 'fatih/vim-go'
 Plug 'nsf/gocode'
 Plug 'vim-syntastic/syntastic'
 Plug 'vim-jp/vim-go-extra'
+
 
 " All of your Plugins must be added before the following line
 call plug#end()            " required
@@ -68,6 +71,7 @@ call plug#end()            " required
     set nobackup              " 关闭修改文件时产生备份
     set nowritebackup         " 关闭修改文件时产生备份
     set hidden                "允许在有未保存的修改时切换缓冲区
+    set list
 
     " 设置VIM内部编码，文件编码
     set nobomb      "去掉utf-8 BOM
@@ -103,7 +107,7 @@ call plug#end()            " required
     " diff          没有改变的文本构成折叠
 
     syntax on           "语法高亮度显示
-    set showmatch       "类似当输入一个左括号时会匹配相应的那个右括号
+        set showmatch       "类似当输入一个左括号时会匹配相应的那个右括号
     set number          "显示行号
     set ruler           "在编辑过程中，在右下角显示光标位置的状态行
     set hlsearch        "高亮显示搜索结果
@@ -152,6 +156,7 @@ call plug#end()            " required
 
 " vim-go settings {
     let g:go_fmt_command = "goimports"
+    let g:go_code_completion_enabled = 0
 " }
 
 " vim-airline {
@@ -164,67 +169,6 @@ call plug#end()            " required
 " }
 
 
-" for fzf {
-    let g:fzf_action = {
-      \ 'ctrl-t': 'tab split',
-      \ 'ctrl-x': 'split',
-      \ 'ctrl-v': 'vsplit' }
-    " Default fzf layout
-    " - down / up / left / right
-    let g:fzf_layout = { 'down': '~40%' }
-    " In Neovim, you can set up fzf window using a Vim command
-    let g:fzf_layout = { 'window': 'enew' }
-    let g:fzf_layout = { 'window': '-tabnew' }
-    let g:fzf_layout = { 'window': '10split enew' }
-    " Customize fzf colors to match your color scheme
-    let g:fzf_colors =
-    \ { 'fg':      ['fg', 'Normal'],
-      \ 'bg':      ['bg', 'Normal'],
-      \ 'hl':      ['fg', 'Comment'],
-      \ 'fg+':     ['fg', 'CursorLine', 'CursorColumn', 'Normal'],
-      \ 'bg+':     ['bg', 'CursorLine', 'CursorColumn'],
-      \ 'hl+':     ['fg', 'Statement'],
-      \ 'info':    ['fg', 'PreProc'],
-      \ 'border':  ['fg', 'Ignore'],
-      \ 'prompt':  ['fg', 'Conditional'],
-      \ 'pointer': ['fg', 'Exception'],
-      \ 'marker':  ['fg', 'Keyword'],
-      \ 'spinner': ['fg', 'Label'],
-      \ 'header':  ['fg', 'Comment'] }
-    " Enable per-command history.
-    " CTRL-N and CTRL-P will be automatically bound to next-history and
-    " previous-history instead of down and up. If you don't like the change,
-    " explicitly bind the keys to down and up in your $FZF_DEFAULT_OPTS.
-    let g:fzf_history_dir = '~/.local/share/fzf-history'
-    " [Buffers] Jump to the existing window if possible
-    let g:fzf_buffers_jump = 1
-    " [[B]Commits] Customize the options used by 'git log':
-    let g:fzf_commits_log_options = '--graph --color=always --format="%C(auto)%h%d %s %C(black)%C(bold)%cr"'
-    " [Tags] Command to generate tags file
-    let g:fzf_tags_command = 'ctags -R'
-    " [Commands] --expect expression for directly executing the command
-    let g:fzf_commands_expect = 'alt-enter,ctrl-x'
-" }
-
-" for LanguageClient {
-    let g:LanguageClient_serverCommands = {
-        \ 'go': ['/Users/wangzhigang/workspace/golang/3rdpkg/bin/bingo'],
-        \ 'javascript': ['/usr/local/bin/javascript-typescript-stdio'],
-        \ 'javascript.jsx': ['tcp://127.0.0.1:2089'],
-        \ 'python': ['/usr/local/bin/pyls'],
-        \ 'c': ['ccls', '--log-file=/tmp/cc.log'],
-        \ 'cpp': ['ccls', '--log-file=/tmp/cc.log'],
-        \ 'cuda': ['ccls', '--log-file=/tmp/cc.log'],
-        \ 'objc': ['ccls', '--log-file=/tmp/cc.log'],
-        \ }
-
-    nnoremap <F5> :call LanguageClient_contextMenu()<CR>
-    " Or map each action separately
-    nnoremap <silent> K :call LanguageClient#textDocument_hover()<CR>
-    nnoremap <silent> gd :call LanguageClient#textDocument_definition()<CR>
-    nnoremap <silent> <F2> :call LanguageClient#textDocument_rename()<CR>
-" }
-
 " ncm2 {
     " enable ncm2 for all buffers
 "    autocmd BufEnter * call ncm2#enable_for_buffer()
@@ -235,22 +179,29 @@ call plug#end()            " required
 
 " 快捷键设置 {
     let mapleader=" "
-    nmap <F5> :checkt<CR>                               " 检查文件是否被其他程序修改
-    nmap <F8> :TagbarToggle<CR>                         " Tagbar的快捷键
-    nmap <F9> :cw<CR>                                   " 打开quickfix窗口的快捷键
-    nmap <F10> :ccl<CR>                                 " 关闭quickfix窗口的快捷键
-    nmap <c-l> :terminal<CR>                            " 打开内嵌终端
+    " fzf 函数列表
+    noremap <leader>o :LeaderfFunction<CR>
+    " 检查文件是否被其他程序修改
+    nmap <F5> :checkt<CR>
+    " Tagbar的快捷键
+    nmap <F8> :TagbarToggle<CR>
+    " 打开quickfix窗口的快捷键
+    nmap <F9> :cw<CR>
+    " 关闭quickfix窗口的快捷键
+    nmap <F10> :ccl<CR>
+    " 打开内嵌终端
+    nmap <c-l> :terminal<CR>
 
-	" 在内嵌终端通过ESC键回到命令模式
+>   " 在内嵌终端通过ESC键回到命令模式
     :tnoremap <Esc> <C-\><C-n>
 
     nmap <leader>= :Tab /                               " 按空格对齐
     nmap <leader>e :NERDTreeToggle <CR>                 " 切换打开文件树
     " 快速查找文本
-    nmap <leader>f :Ack 
+    nmap <leader>f :Ack-
 
     " for fzf
-    nnoremap <silent> <c-p> :Files<CR>
+    nnoremap <silent> <c-p> :FZF<CR>
     nnoremap <silent> <Leader>l :Buffers<CR>
 
     " 切换paste模式
@@ -258,4 +209,4 @@ call plug#end()            " required
     " imap <leader>p <C-O>:set invpaste paste<CR>
     " set pastetoggle=<leader>p
 
-" }
+" }    
