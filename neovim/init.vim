@@ -192,7 +192,7 @@ call plug#end()            " required
     " 打开内嵌终端
     nmap <c-l> :terminal<CR>
 
->   " 在内嵌终端通过ESC键回到命令模式
+    " 在内嵌终端通过ESC键回到命令模式
     :tnoremap <Esc> <C-\><C-n>
 
     nmap <leader>= :Tab /                               " 按空格对齐
