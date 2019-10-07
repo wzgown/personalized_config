@@ -7,10 +7,11 @@ Plug 'NLKNguyen/papercolor-theme' " 主题
 Plug 'morhetz/gruvbox'            " 主题
 
 Plug 'scrooloose/nerdtree'       " 文件目录
-Plug 'jistr/vim-nerdtree-tabs'   "-
 Plug 'Xuyuanp/nerdtree-git-plugin' " 文件目录中显示git状态
--
-Plug 'vim-airline/vim-airline'   " 超强的状态栏
+Plug 'tpope/vim-vinegar'
+
+Plug 'voldikss/vim-floaterm'     " 在浮窗中打开终端
+Plug 'itchyny/lightline.vim'     " 超强的状态栏
 Plug 'godlygeek/tabular'         " 代码对齐
 Plug 'junegunn/vim-easy-align'   " 代码对齐
 Plug 'easymotion/vim-easymotion' " 跳转功能增加
@@ -21,7 +22,6 @@ Plug 'majutsushi/tagbar'         " 显示代码大纲
 Plug 'tpope/vim-fugitive'        " 集成git
 Plug 'airblade/vim-gitgutter'    " 在行首显示git状态
 
-Plug 'mileszs/ack.vim'           " 比grep更好的文件内容查找，配合ag使用
 Plug 'octol/vim-cpp-enhanced-highlight' " C++ 增加高亮，可高亮标准库关键字
 Plug 'mg979/vim-visual-multi'   " 多光标同时编辑
 Plug 'w0rp/ale'                 " 代码静态检查
@@ -113,10 +113,11 @@ call plug#end()            " required
     set hlsearch        "高亮显示搜索结果
     set cursorline      "突出显示当前行
 
-    "colorscheme molokai "配色方案
-    "let g:molokai_original = 1
-    set background=dark
+    "colorscheme gruvbox "配色方案
     colorscheme PaperColor
+    set termguicolors
+    set background=dark
+    "set background=light
 
     " 用X,Y轴的辅助线定位光标 cross cursor position
     "set cursorline
@@ -157,15 +158,40 @@ call plug#end()            " required
 " vim-go settings {
     let g:go_fmt_command = "goimports"
     let g:go_code_completion_enabled = 0
+
+    let g:ale_linters = {
+        \ 'go': ['gopls'],
+        \}
 " }
 
-" vim-airline {
-    let g:airline#extensions#whitespace#checks = ['indent']
-
-    "打开tabline功能,方便查看Buffer和切换，这个功能比较不错"
-    "我还省去了minibufexpl插件，因为我习惯在1个Tab下用多个buffer"
-    let g:airline#extensions#tabline#enabled = 1
-    let g:airline#extensions#tabline#buffer_nr_show = 1
+" fzf {
+" Reverse the layout to make the FZF list top-down
+let $FZF_DEFAULT_OPTS='--layout=reverse'
+" Using the custom window creation function
+let g:fzf_layout = { 'window': 'call FloatingFZF()' }
+" Function to create the custom floating window
+function! FloatingFZF()
+  " creates a scratch, unlisted, new, empty, unnamed buffer
+  " to be used in the floating window
+  let buf = nvim_create_buf(v:false, v:true)
+  " 90% of the height
+  let height = float2nr(&lines * 0.9)
+  " 60% of the height
+  let width = float2nr(&columns * 0.6)
+  " horizontal position (centralized)
+  let horizontal = float2nr((&columns - width) / 2)
+  " vertical position (one line down of the top)
+  let vertical = 1
+  let opts = {
+        \ 'relative': 'editor',
+        \ 'row': vertical,
+        \ 'col': horizontal,
+        \ 'width': width,
+        \ 'height': height
+        \ }
+  " open the new window, floating, and enter to it
+  call nvim_open_win(buf, v:true, opts)
+endfunction
 " }
 
 
@@ -195,18 +221,35 @@ call plug#end()            " required
     " 在内嵌终端通过ESC键回到命令模式
     :tnoremap <Esc> <C-\><C-n>
 
-    nmap <leader>= :Tab /                               " 按空格对齐
-    nmap <leader>e :NERDTreeToggle <CR>                 " 切换打开文件树
-    " 快速查找文本
-    nmap <leader>f :Ack-
-
     " for fzf
     nnoremap <silent> <c-p> :FZF<CR>
-    nnoremap <silent> <Leader>l :Buffers<CR>
+
+    " 按空格对齐
+    nmap <leader>= :Tab /
+    " 切换打开文件树
+    nmap <leader>e :NERDTreeToggle <CR>
+    " 打开当前文件所在目录
+    nmap <leader>p :Ex <CR>
+
+    " 快速查找光标所在的文本
+    nmap <leader>f <Plug>LeaderfRgCwordLiteralNoBoundary<CR>
+    " 快速查找选中文本
+    vmap <leader>v <Plug>LeaderfRgVisualLiteralNoBoundary<CR>
+
+    " 重复上一次的查找
+    nmap <leader>r :LeaderfRgRecall <CR>
+    " 查找
+    nmap <leader>gi :LeaderfRgInteractive<CR>
+
+    nnoremap <silent> <Leader>l :LeaderfBuffer<CR>
 
     " 切换paste模式
     " nnoremap <leader>p :set invpaste paste<CR>
     " imap <leader>p <C-O>:set invpaste paste<CR>
     " set pastetoggle=<leader>p
 
-" }    
+    " 在浮窗中打开终端
+    noremap  <silent> <F12>           :FloatermToggle<CR>i
+    noremap! <silent> <F12>           <Esc>:FloatermToggle<CR>i
+    tnoremap <silent> <F12>           <C-\><C-n>:FloatermToggle<CR>
+" }
