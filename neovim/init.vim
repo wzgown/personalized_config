@@ -29,7 +29,7 @@ Plug 'w0rp/ale'                 " 代码静态检查
 Plug 'Yggdroot/LeaderF', { 'do': './install.sh' } " used for locating files, buffers, mrus, ctags, gtags, etc. in large project.
 
 " 自动补全
-Plug 'neoclide/coc.nvim', {'tag': '*', 'do': './install.sh'}
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
 " Plug 'ncm2/ncm2'
 " Plug 'roxma/nvim-yarp'
 " Plug 'ncm2/ncm2-go'   " golang 补全
@@ -52,8 +52,7 @@ Plug 'fatih/vim-go'
 Plug 'nsf/gocode'
 Plug 'vim-syntastic/syntastic'
 Plug 'vim-jp/vim-go-extra'
-
-
+                                                                                                                                                                                                                                  [125/1830]
 " All of your Plugins must be added before the following line
 call plug#end()            " required
 
@@ -71,7 +70,7 @@ call plug#end()            " required
     set nobackup              " 关闭修改文件时产生备份
     set nowritebackup         " 关闭修改文件时产生备份
     set hidden                "允许在有未保存的修改时切换缓冲区
-    set list
+    "set list
 
     " 设置VIM内部编码，文件编码
     set nobomb      "去掉utf-8 BOM
@@ -107,9 +106,10 @@ call plug#end()            " required
     " diff          没有改变的文本构成折叠
 
     syntax on           "语法高亮度显示
-        set showmatch       "类似当输入一个左括号时会匹配相应的那个右括号
+    set showmatch       "类似当输入一个左括号时会匹配相应的那个右括号
     set number          "显示行号
-    set ruler           "在编辑过程中，在右下角显示光标位置的状态行
+    set relativenumber  " 显示相对行号
+        set ruler           "在编辑过程中，在右下角显示光标位置的状态行
     set hlsearch        "高亮显示搜索结果
     set cursorline      "突出显示当前行
 
@@ -120,7 +120,7 @@ call plug#end()            " required
     "set background=light
 
     " 用X,Y轴的辅助线定位光标 cross cursor position
-    "set cursorline
+    set cursorline
     "set cursorcolumn
     "
     set tabstop=4               " 用4个空格代替Tab
@@ -134,6 +134,14 @@ call plug#end()            " required
     set wrap                    "Wrap lines
 
     set laststatus=2            "总是显示状态栏
+
+    if has("termguicolors")
+        " fix bug for vim
+        set t_8f=^[[38;2;%lu;%lu;%lum
+        set t_8b=^[[48;2;%lu;%lu;%lum
+        " enable true color
+        set termguicolors
+    endif
 "}
 
 " syntax for proto {
@@ -162,36 +170,6 @@ call plug#end()            " required
     let g:ale_linters = {
         \ 'go': ['gopls'],
         \}
-" }
-
-" fzf {
-" Reverse the layout to make the FZF list top-down
-let $FZF_DEFAULT_OPTS='--layout=reverse'
-" Using the custom window creation function
-let g:fzf_layout = { 'window': 'call FloatingFZF()' }
-" Function to create the custom floating window
-function! FloatingFZF()
-  " creates a scratch, unlisted, new, empty, unnamed buffer
-  " to be used in the floating window
-  let buf = nvim_create_buf(v:false, v:true)
-  " 90% of the height
-  let height = float2nr(&lines * 0.9)
-  " 60% of the height
-  let width = float2nr(&columns * 0.6)
-  " horizontal position (centralized)
-  let horizontal = float2nr((&columns - width) / 2)
-  " vertical position (one line down of the top)
-  let vertical = 1
-  let opts = {
-        \ 'relative': 'editor',
-        \ 'row': vertical,
-        \ 'col': horizontal,
-        \ 'width': width,
-        \ 'height': height
-        \ }
-  " open the new window, floating, and enter to it
-  call nvim_open_win(buf, v:true, opts)
-endfunction
 " }
 
 
@@ -240,7 +218,7 @@ endfunction
     nmap <leader>r :LeaderfRgRecall <CR>
     " 查找
     nmap <leader>gi :LeaderfRgInteractive<CR>
-
+    
     nnoremap <silent> <Leader>l :LeaderfBuffer<CR>
 
     " 切换paste模式
