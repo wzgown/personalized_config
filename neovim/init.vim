@@ -52,7 +52,7 @@ Plug 'fatih/vim-go'
 Plug 'nsf/gocode'
 Plug 'vim-syntastic/syntastic'
 Plug 'vim-jp/vim-go-extra'
-                                                                                                                                                                                                                                  [125/1830]
+
 " All of your Plugins must be added before the following line
 call plug#end()            " required
 
@@ -227,7 +227,7 @@ call plug#end()            " required
     " set pastetoggle=<leader>p
 
     " 在浮窗中打开终端
-    noremap  <silent> <F12>           :FloatermToggle<CR>i
-    noremap! <silent> <F12>           <Esc>:FloatermToggle<CR>i
+    noremap  <silent> <F12>           :FloatermToggle<CR>
+    noremap! <silent> <F12>           <Esc>:FloatermToggle<CR>
     tnoremap <silent> <F12>           <C-\><C-n>:FloatermToggle<CR>
 " }
