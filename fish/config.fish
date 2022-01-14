@@ -12,6 +12,7 @@ abbr -a gco git checkout
 abbr -a code '/Applications/Visual\ Studio\ Code.app/Contents/Resources/app/bin/code'
 alias ls=exa
 alias ll='exa --long --header --git'
+alias cat=bat
 # 还原docker的启动命令
 alias runlike="docker run --rm -v /var/run/docker.sock:/var/run/docker.sock assaflavie/runlike"
 # 用bat来显示man文档; bat是更先进的cat
@@ -19,4 +20,4 @@ set -x MANPAGER "sh -c 'col -bx | bat -l man -p'"
 
 # ucloud
 alias ucd='cd /Users/user/workspace/ucloud'
-set -x PATH $PATH /Users/user/workspace/ucloud/bin /Users/user/go/bin
+set -x PATH $PATH ~/workspace/ucloud/bin ~/go/bin
