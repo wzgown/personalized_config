@@ -108,8 +108,8 @@ call plug#end()            " required
     syntax on           "语法高亮度显示
     set showmatch       "类似当输入一个左括号时会匹配相应的那个右括号
     set number          "显示行号
-    set relativenumber  " 显示相对行号
-        set ruler           "在编辑过程中，在右下角显示光标位置的状态行
+    " set relativenumber  " 显示相对行号
+    set ruler           "在编辑过程中，在右下角显示光标位置的状态行
     set hlsearch        "高亮显示搜索结果
     set cursorline      "突出显示当前行
 
@@ -122,7 +122,7 @@ call plug#end()            " required
     " 用X,Y轴的辅助线定位光标 cross cursor position
     set cursorline
     "set cursorcolumn
-    "
+
     set tabstop=4               " 用4个空格代替Tab
     set shiftwidth=4            "设置当行之间交错时使用4个空格
     set smarttab
