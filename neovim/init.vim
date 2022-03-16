@@ -41,6 +41,9 @@ Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
 
+Plug 'kyazdani42/nvim-web-devicons' " for file icons
+Plug 'kyazdani42/nvim-tree.lua' " 文件树
+
 " Language Server Protocol (LSP)
 Plug 'autozimu/LanguageClient-neovim', {
     \ 'branch': 'next',
