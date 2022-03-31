@@ -7,6 +7,8 @@ mkdir -p ~/.config/nvim
 mkdir -p ~/.local/share/nvim/site/autoload
 curl -fLo "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 ln -s $PWD/neovim/init.vim ~/.config/nvim/init.vim
+# 安装python插件支持
+pip3 install --user --upgrade neovim
 
 ln -s $PWD/tmux.conf ~/.tmux.conf 
 ln -s $PWD/fish/config.fish ~/.config/fish/config.fish
